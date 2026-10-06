@@ -1,89 +1,72 @@
-# Backend Setup Guide
+# Backend Setup
 
 ## Overview
 
-The backend for AI Resume Intelligence is built using **FastAPI**, a Python web framework. It currently provides a health-check endpoint and an automated test.
+The backend is built with FastAPI and provides the API for AI Resume Intelligence.
 
 ## Prerequisites
 
-- Python 3.12
-- Git
+- Python 3.12+
 - PowerShell (Windows)
 
-## 1. Navigate to the Project Root
+## 1. Activate the Virtual Environment
 
-Open a terminal in the repository root directory.
-
-## 2. Create a Virtual Environment
-
-Run:
-
-```powershell
-python -m venv backend\.venv
-```
-
-Activate it:
+From the repository root:
 
 ```powershell
 .\backend\.venv\Scripts\Activate.ps1
 ```
 
-If PowerShell blocks script execution, use an alternative terminal or an approved execution policy for your environment.
-
-## 3. Install Dependencies
-
-With the virtual environment activated, run:
+## 2. Install Dependencies
 
 ```powershell
-python -m pip install -r backend\requirements.txt
+python -m pip install -r backend/requirements.txt
 ```
 
-## 4. Start the Backend Server
+## 3. Configure Environment Variables
 
-Run from the repository root:
+Copy the example configuration file from the repository root:
 
 ```powershell
-python -m uvicorn app.main:app --reload --app-dir backend
+Copy-Item .env.example .env
 ```
 
-The API will be available at:
+The application reads configuration from the root `.env` file when commands are run from the repository root.
 
-- Base URL: `http://127.0.0.1:8000`
-- Interactive API documentation: `http://127.0.0.1:8000/docs`
-- Health check: `http://127.0.0.1:8000/health`
+| Variable | Description | Default |
+|---|---|---|
+| `APP_NAME` | Application name | `AI Resume Intelligence API` |
+| `APP_VERSION` | API version | `0.1.0` |
+| `APP_ENV` | Application environment | `development` |
+| `DEBUG` | Enable debug mode | `false` |
 
-The health endpoint should return:
+The application supports environment-variable overrides, so configuration can be changed without editing source code.
 
-```json
-{
-  "status": "ok"
-}
-```
+**Security:** Never commit `.env` or put real secrets in `.env.example`. The root `.gitignore` excludes `.env`.
 
-## 5. Run Automated Tests
+## 4. Run the Backend
 
-Open a second terminal in the repository root and activate the virtual environment.
-
-Set the Python module search path:
+From the repository root:
 
 ```powershell
 $env:PYTHONPATH = "backend"
+python -m uvicorn app.main:app --reload --app-dir backend
 ```
 
-Run the tests:
+Open `http://127.0.0.1:8000/docs` to access the interactive API documentation.
+
+The health endpoint is available at `http://127.0.0.1:8000/health`.
+
+## 5. Run Tests
+
+From the repository root:
 
 ```powershell
-python -m pytest backend\tests -v
+$env:PYTHONPATH = "backend"
+python -m pytest backend/tests -v
+Remove-Item Env:PYTHONPATH
 ```
-
-The health-check test should pass.
 
 ## Current Scope
 
-The backend currently includes:
-
-- FastAPI application initialization
-- Health-check endpoint
-- Automated health-check test
-
-Authentication, resume processing, job matching, AI recommendations, and database integration will be implemented in later development tasks.
+The backend currently includes the application configuration, FastAPI application, and health-check endpoint. Additional API functionality will be implemented in later tasks.

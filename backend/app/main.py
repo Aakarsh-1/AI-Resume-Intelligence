@@ -1,10 +1,14 @@
-
 from fastapi import FastAPI
 
+from app.config import get_settings
+
+settings = get_settings()
+
 app = FastAPI(
-    title="AI Resume Intelligence API",
+    title=settings.app_name,
     description="Backend API for the AI Resume Intelligence platform",
-    version="0.1.0",
+    version=settings.app_version,
+    debug=settings.debug,
 )
 
 
