@@ -1,16 +1,80 @@
-# React + Vite
+# AI Resume Intelligence — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Overview
 
-Currently, two official plugins are available:
+The frontend is built with React and Vite. It provides the user interface for the AI Resume Intelligence platform.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Prerequisites
 
-## React Compiler
+- Node.js and npm
+- Project dependencies installed
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Install Dependencies
 
-## Expanding the Oxlint configuration
+From the repository root:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```powershell
+npm install --prefix frontend
+```
+
+## Run the Development Server
+
+```powershell
+npm run dev --prefix frontend
+```
+
+Use the local URL printed by Vite to open the application in your browser.
+
+## Testing
+
+The frontend uses Vitest, jsdom, and React Testing Library.
+
+### Run All Tests Once
+
+From the repository root:
+
+```powershell
+npm run test --prefix frontend -- --run
+```
+
+### Run Tests in Watch Mode
+
+```powershell
+npm run test --prefix frontend
+```
+
+### Test Structure
+
+- `src/tests/` — frontend test files.
+- `src/test/setup.js` — shared testing setup and DOM matchers.
+- `src/tests/Dashboard.test.jsx` — initial Dashboard tests.
+
+The initial tests verify the welcome heading, navigation links, and feature cards.
+
+## Code Quality Checks
+
+### Lint
+
+```powershell
+npm run lint --prefix frontend
+```
+
+### Production Build
+
+```powershell
+npm run build --prefix frontend
+```
+
+## Backend Tests
+
+Backend testing instructions are documented in `../backend/README.md`.
+
+From the repository root, run:
+
+```powershell
+$env:PYTHONPATH = "backend"
+python -m pytest backend/tests -v
+Remove-Item Env:PYTHONPATH
+```
+
+The backend uses pytest and currently includes configuration and health-check tests.
