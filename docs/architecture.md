@@ -48,49 +48,41 @@ Admins can:
 
 ## 3. High-Level Architecture
 
-```text
-                         ┌─────────────────────┐
-                         │        Users        │
-                         │ Applicant / HR /    │
-                         │ Admin               │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │      Frontend       │
-                         │ React + JavaScript  │
-                         │ Vite + Tailwind CSS │
-                         └──────────┬──────────┘
-                                    │
-                              HTTP / REST
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │     Backend API     │
-                         │ Python + FastAPI    │
-                         └──────────┬──────────┘
-                                    │
-              ┌─────────────────────┼─────────────────────┐
-              │                     │                     │
-              ▼                     ▼                     ▼
-      ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
-      │ Authentication│     │ Resume / Job  │     │ Application   │
-      │ & Authorization│    │ Processing    │     │ Management    │
-      └───────────────┘     └───────┬───────┘     └───────────────┘
-                                    │
-                                    ▼
-                            ┌───────────────┐
-                            │  AI Analysis  │
-                            │ Resume        │
-                            │ Matching      │
-                            │ Recommendations│
-                            └───────┬───────┘
-                                    │
-                                    ▼
-                            ┌───────────────┐
-                            │  PostgreSQL   │
-                            │   Database    │
-                                                                                                                └───────────────┘
+```mermaid
+flowchart TD
+    U["Users<br/>Applicant · HR · Admin"]
+
+    subgraph FE["Frontend"]
+        UI["React + JavaScript<br/>Vite · Tailwind CSS · React Router"]
+    end
+
+    subgraph BE["Backend — Python + FastAPI"]
+        API["REST API"]
+        AUTH["Authentication &<br/>Role-Based Authorization"]
+        RESUME["Resume Processing<br/>Upload · Validation · Text Extraction"]
+        JOB["Job Processing<br/>Job Description Management"]
+        APP["Application Management"]
+        AI["AI Analysis & Matching<br/>Scores · Skills Gaps · Recommendations"]
+    end
+
+    DB[("PostgreSQL Database")]
+
+    U --> UI
+    UI <-->|HTTP / REST| API
+
+    API --> AUTH
+    API --> RESUME
+    API --> JOB
+    API --> APP
+
+    RESUME --> AI
+    JOB --> AI
+
+    AUTH <--> DB
+    RESUME <--> DB
+    JOB <--> DB
+    APP <--> DB
+    AI <--> DB
 ```
 
 The frontend communicates with the backend through REST APIs.
